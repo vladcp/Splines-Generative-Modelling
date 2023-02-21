@@ -12,11 +12,13 @@ public class RingExtrudeShape : ExtrudeShape {
     public float radius = 3f;
 
     public Mesh surfaceMesh; // the 2D mesh of the object
+
     private void Awake() {
         surfaceMesh = new Mesh();
         surfaceMesh.name = "2D cross section";
         GenerateRing();
     }
+
     private void OnValidate() {
         GenerateRing();
     }
@@ -37,8 +39,8 @@ public class RingExtrudeShape : ExtrudeShape {
         int[] triangleIndices = new int[triangleCount * 3];
         for (int i = 0; i < triangleCount; i+=1) {
             triangleIndices[id] = 0;    id++;
-            triangleIndices[id] = i+2; id++;
-            triangleIndices[id] = i+1;   id++;
+            triangleIndices[id] = i+2;  id++;
+            triangleIndices[id] = i+1;  id++;
         }
         surfaceMesh.SetVertices(meshVerts);
         surfaceMesh.SetTriangles(triangleIndices, 0);
@@ -62,10 +64,5 @@ public class RingExtrudeShape : ExtrudeShape {
             lineIndices[i] = (i+1)/2;
             lineIndices[i + 1] = (i+1)/2;
         }
-
-        //mesh.SetVertices(vertices);
-        //mesh.SetTriangles(triangleIndices, 0);
-        //mesh.SetNormals(normals);
-        //mesh.SetUVs(0, uvs);
     }
 }
