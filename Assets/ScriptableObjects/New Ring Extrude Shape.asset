@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc77b04221139c44a9f3480ce4f4ebc7, type: 3}
+  m_Name: New Ring Extrude Shape
+  m_EditorClassIdentifier: 
+  vertices:
+  - point: {x: 1.82, y: -0}
+    normal: {x: 1, y: -0}
+    u: 0
+  - point: {x: 1.6115301, y: -0.8457962}
+    normal: {x: 0.885456, y: -0.4647232}
+    u: 0
+  - point: {x: 1.0338777, y: -1.4978306}
+    normal: {x: 0.5680647, y: -0.82298386}
+    u: 0
+  - point: {x: 0.21937677, y: -1.8067302}
+    normal: {x: 0.120536685, y: -0.99270886}
+    u: 0
+  - point: {x: -0.64538103, y: -1.7017295}
+    normal: {x: -0.35460496, y: -0.9350162}
+    u: 0
+  - point: {x: -1.3622897, y: -1.2068833}
+    normal: {x: -0.7485108, y: -0.66312265}
+    u: 0
+  - point: {x: -1.7671142, y: -0.43555453}
+    normal: {x: -0.97094184, y: -0.23931567}
+    u: 0
+  - point: {x: -1.767114, y: 0.43555483}
+    normal: {x: -0.9709418, y: 0.23931584}
+    u: 0
+  - point: {x: -1.3622894, y: 1.2068834}
+    normal: {x: -0.74851066, y: 0.6631228}
+    u: 0
+  - point: {x: -0.6453803, y: 1.7017298}
+    normal: {x: -0.35460457, y: 0.93501633}
+    u: 0
+  - point: {x: 0.21937688, y: 1.8067302}
+    normal: {x: 0.120536745, y: 0.99270886}
+    u: 0
+  - point: {x: 1.0338783, y: 1.4978305}
+    normal: {x: 0.568065, y: 0.82298374}
+    u: 0
+  - point: {x: 1.6115301, y: 0.8457962}
+    normal: {x: 0.885456, y: 0.4647232}
+    u: 0
+  lineIndices: 000000000100000001000000020000000200000003000000030000000400000004000000050000000500000006000000060000000700000007000000080000000800000009000000090000000a0000000a0000000b0000000b0000000c0000000c00000000000000
+  segmentCount: 13
+  radius: 1.82
+  hardEdgeThreshold: 12
+  surfaceMesh: {fileID: 0}

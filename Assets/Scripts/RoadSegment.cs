@@ -24,11 +24,19 @@ public class RoadSegment : MonoBehaviour
 
   [SerializeField] bool addNoise = false;
 
+  [SerializeField] Color baseColor = Color.green;
+
+  Material[] material;
+
   void Awake() {
+
     mesh = new Mesh();
     mesh.name = "Segment";
 
     GetComponent<MeshFilter>().sharedMesh = mesh;
+    
+    material = GetComponent<MeshRenderer>().materials;
+    material[0].color = baseColor;
   }
 
   private void Update() {
@@ -39,60 +47,6 @@ public class RoadSegment : MonoBehaviour
     }
     // printPoint();
   }
-  void Extrude() {
-    mesh.Clear();
-    // todo: pass an ExtrudeShape as parameter - can be a square, circle (maybe any shape defined by user)
-    // also pass in a path of oriented points (unless the user can change the no of segments)
-    // ALSO: curve subdivision according to the curvature of the curve 
-
-    // Vertices 
-    List<Vector3> verts = new List<Vector3>();
-    List<Vector3> normals = new List<Vector3>();
-    for (int ring = 0; ring < edgeCount; ring++)
-    {
-      float t = ring / (edgeCount - 1f);
-      Debug.Log("T = " + t);
-      OrientedPoint op = BezierFs.GetOrientedPoint(pts, t, Vector3.up);
-
-      for (int i = 0; i < shape2D.VertexCount; i++)
-      {
-        verts.Add(op.LocalToWorldPos(shape2D.vertices[i].point));
-        normals.Add(op.LocalToWorldVec(shape2D.vertices[i].normal));
-      }
-    }
-
-    Debug.Log("First vertex: " + verts[0]);
-    // Triangles
-    List<int> triIndices = new List<int>();
-    for (int ring = 0; ring < edgeCount - 1; ring++) {
-      int rootIndex = ring * shape2D.VertexCount;
-      int rootIndexNext = (ring + 1) * shape2D.VertexCount;
-
-      for (int line = 0; line < shape2D.LineCount; line += 2) {
-        int lineIndexA = shape2D.lineIndices[line];
-        int lineIndexB = shape2D.lineIndices[line + 1];
-
-        int currentA = rootIndex + lineIndexA;
-        int currentB = rootIndex + lineIndexB;
-        int nextA = rootIndexNext + lineIndexA;
-        int nextB = rootIndexNext + lineIndexB;
-
-        triIndices.Add(currentA);
-        triIndices.Add(nextA);
-        triIndices.Add(nextB);
-
-        triIndices.Add(currentA);
-        triIndices.Add(nextB);
-        triIndices.Add(currentB);
-      }
-    }
-
-    mesh.SetVertices(verts);
-    mesh.SetTriangles(triIndices, 0);
-    //mesh.RecalculateNormals();
-    mesh.SetNormals(normals);
-
-  }
 
   OrientedPoint[] GetOrientedPoints(Vector3[] controlPoints, int edgeCount) {
     OrientedPoint[] path = new OrientedPoint[edgeCount];
@@ -102,6 +56,7 @@ public class RoadSegment : MonoBehaviour
     }
     return path;
   }
+
   void Extrude(Mesh mesh, ExtrudeShape shape, OrientedPoint[] path) {
     int vertsInShape = shape.VertexCount;
     int segments = path.Length - 1;
@@ -115,7 +70,6 @@ public class RoadSegment : MonoBehaviour
     Vector3[] normals = new Vector3[vertCount];
     Vector2[] uvs = new Vector2[vertCount];
     Color[] colors = new Color[vertCount];
-    Color baseColor = Color.grey;
 
     for (int i = 0; i < path.Length; i++) {
       int offset = i * vertsInShape;
@@ -166,7 +120,6 @@ public class RoadSegment : MonoBehaviour
     Vector2[] uvs = new Vector2[vertCount];
 
     Color[] colors = new Color[vertCount];
-    Color baseColor = Color.grey;
 
     for (int i = 0; i < path.Length; i++) {
       int offset = i * vertsInShape;
