@@ -11,17 +11,31 @@ public class RingExtrudeShape : ExtrudeShape {
     [Range(1f, 5f)]
     public float radius = 3f;
 
+    // max number of segments where the object is considered to have 'hard edges'
+    // in order to calculate normals
+    [Range(3, 30)]
+    public int hardEdgeThreshold;
+
     public Mesh surfaceMesh; // the 2D mesh of the object
 
     private void Awake() {
         surfaceMesh = new Mesh();
         surfaceMesh.name = "2D cross section";
-        GenerateRing();
+        if (segmentCount > hardEdgeThreshold) {
+            GenerateShapeSoftEdges();
+        } else {
+            GenerateShapeHardEdges();
+        }
     }
 
     private void OnValidate() {
-        GenerateRing();
+        if (segmentCount > hardEdgeThreshold) {
+            GenerateShapeSoftEdges();
+        } else {
+            GenerateShapeHardEdges();
+        }
     }
+
 
     // TODO add a mesh renderer too
     public void GenerateMesh() {
@@ -46,8 +60,10 @@ public class RingExtrudeShape : ExtrudeShape {
         surfaceMesh.SetTriangles(triangleIndices, 0);
     }
 
-    private void GenerateRing() {
+    private void GenerateShapeSoftEdges() {
         vertices = new Vertex[segmentCount];
+ 
+        // define vertices
         for (int i = 0; i < segmentCount; i++) {
             float t = i / (float)segmentCount;
             float angRad = - t * Mathfs.TAU;
@@ -58,11 +74,46 @@ public class RingExtrudeShape : ExtrudeShape {
                 normal = dir 
             };
         }
+        // define the connection between vertices
         lineIndices = new int[segmentCount*2];
         lineIndices[0] = 0; lineIndices[lineIndices.Length - 1] = 0;
         for (int i = 1; i < lineIndices.Length - 1; i+=2) {
             lineIndices[i] = (i+1)/2;
             lineIndices[i + 1] = (i+1)/2;
+        }
+    }
+
+    private void GenerateShapeHardEdges() {
+        vertices = new Vertex[segmentCount * 2];
+        float t1, t2;
+        float angRad1 = 0f, angRad2;
+        Vector2 dir1 = Mathfs.GetVectorByAngle(angRad1), dir2;
+        
+        // define vertices
+        for(int i = 0; i < segmentCount * 2; i += 2) {
+            t1 = (i * .5f) / (float) segmentCount;
+            t2 = (i*.5f+1) / (float)segmentCount;
+            angRad2 = - t2 * Mathfs.TAU;
+            dir2 = Mathfs.GetVectorByAngle(angRad2);
+            
+            Vector2 halfDir = (dir1 + dir2).normalized;
+
+            vertices[i] = new Vertex {
+                point = dir1 * radius,
+                normal = halfDir
+            };
+            vertices[i+1] = new Vertex {
+                point = dir2 * radius,
+                normal = halfDir
+            };
+
+            angRad1 = angRad2;
+            dir1 = dir2;
+        }
+        // define the connection between vertices
+        lineIndices = new int[segmentCount*2];
+        for(int i = 0; i < lineIndices.Length; i ++) {
+            lineIndices[i] = i;
         }
     }
 }

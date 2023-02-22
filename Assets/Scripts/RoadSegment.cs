@@ -225,6 +225,7 @@ public class RoadSegment : MonoBehaviour
     void DrawPoint(Vector2 localPos) => Gizmos.DrawSphere(testPoint.LocalToWorldPos(localPos), 0.1f);
 
     Vector3[] localVerts = shape2D.vertices.Select(v => testPoint.LocalToWorldPos(v.point)).ToArray();
+    Vector3[] localNormals = shape2D.vertices.Select(v => testPoint.LocalToWorldVec(v.normal)).ToArray();
 
     // draw cross section outline
     for (int i = 0; i < shape2D.VertexCount; i++) {
@@ -237,6 +238,8 @@ public class RoadSegment : MonoBehaviour
       Vector3 b = localVerts[shape2D.lineIndices[i + 1]];
 
       Gizmos.DrawLine(a, b);
+      Gizmos.DrawRay(a, localNormals[shape2D.lineIndices[i]]);
+      Gizmos.DrawRay(b, localNormals[shape2D.lineIndices[i+1]]);
     }
 
     //Gizmos.DrawSphere(testPoint.LocalToWorld(Vector3.right * 0.3f), 0.02f);

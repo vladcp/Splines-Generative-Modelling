@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc77b04221139c44a9f3480ce4f4ebc7, type: 3}
+  m_Name: newnew
+  m_EditorClassIdentifier: 
+  vertices:
+  - point: {x: 2.22, y: 0}
+    normal: {x: 0.95105654, y: -0.309017}
+    u: 0
+  - point: {x: 1.7960178, y: -1.3048832}
+    normal: {x: 0.95105654, y: -0.309017}
+    u: 0
+  - point: {x: 1.7960178, y: -1.3048832}
+    normal: {x: 0.5877853, y: -0.809017}
+    u: 0
+  - point: {x: 0.6860177, y: -2.1113455}
+    normal: {x: 0.5877853, y: -0.809017}
+    u: 0
+  - point: {x: 0.6860177, y: -2.1113455}
+    normal: {x: -0.00000003133602, y: -1}
+    u: 0
+  - point: {x: -0.6860178, y: -2.1113455}
+    normal: {x: -0.00000003133602, y: -1}
+    u: 0
+  - point: {x: -0.6860178, y: -2.1113455}
+    normal: {x: -0.5877853, y: -0.80901694}
+    u: 0
+  - point: {x: -1.7960179, y: -1.3048831}
+    normal: {x: -0.5877853, y: -0.80901694}
+    u: 0
+  - point: {x: -1.7960179, y: -1.3048831}
+    normal: {x: -0.95105654, y: -0.3090169}
+    u: 0
+  - point: {x: -2.22, y: 0.00000019407857}
+    normal: {x: -0.95105654, y: -0.3090169}
+    u: 0
+  - point: {x: -2.22, y: 0.00000019407857}
+    normal: {x: -0.9510565, y: 0.30901706}
+    u: 0
+  - point: {x: -1.7960176, y: 1.3048835}
+    normal: {x: -0.9510565, y: 0.30901706}
+    u: 0
+  - point: {x: -1.7960176, y: 1.3048835}
+    normal: {x: -0.58778524, y: 0.809017}
+    u: 0
+  - point: {x: -0.68601793, y: 2.1113455}
+    normal: {x: -0.58778524, y: 0.809017}
+    u: 0
+  - point: {x: -0.68601793, y: 2.1113455}
+    normal: {x: 0.00000001566801, y: 1}
+    u: 0
+  - point: {x: 0.686018, y: 2.1113455}
+    normal: {x: 0.00000001566801, y: 1}
+    u: 0
+  - point: {x: 0.686018, y: 2.1113455}
+    normal: {x: 0.5877854, y: 0.8090168}
+    u: 0
+  - point: {x: 1.7960182, y: 1.3048826}
+    normal: {x: 0.5877854, y: 0.8090168}
+    u: 0
+  - point: {x: 1.7960182, y: 1.3048826}
+    normal: {x: 0.9510566, y: 0.30901673}
+    u: 0
+  - point: {x: 2.22, y: -0.00000038815713}
+    normal: {x: 0.9510566, y: 0.30901673}
+    u: 0
+  lineIndices: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000
+  segmentCount: 10
+  radius: 2.22
+  hardEdgeThreshold: 10
+  surfaceMesh: {fileID: 0}
