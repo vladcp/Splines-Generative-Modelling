@@ -182,7 +182,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.73018825, b: 0.2783019, a: 1}
-  m_Intensity: 41.68
+  m_Intensity: 10
   m_Range: 7.12
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -762,7 +762,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 903575968}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1968487174}
@@ -1145,17 +1145,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c29525dec42a004f9c7fa4e9679d201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shape2D: {fileID: 11400000, guid: d796dff3b39244c4da6491f8a153afe9, type: 2}
-  ring2D: {fileID: 0}
-  edgeCount: 2
   controlPoints:
   - {fileID: 187223750}
   - {fileID: 903575969}
   - {fileID: 2059877814}
   - {fileID: 2117440735}
-  tTest: 0.551
+  shape2D: {fileID: 11400000, guid: d796dff3b39244c4da6491f8a153afe9, type: 2}
+  ring2D: {fileID: 11400000, guid: d796dff3b39244c4da6491f8a153afe9, type: 2}
   addNoise: 0
-  baseColor: {r: 0, g: 1, b: 0, a: 1}
+  baseColor: {r: 0, g: 0.71671367, b: 1, a: 1}
+  radius: 0.96
+  tTest: 0.577
+  segmentCount: 8
 --- !u!1 &2059877813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1180,7 +1181,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059877813}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 40, z: 0}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1968487174}
@@ -1210,7 +1211,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117440734}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 60, z: 0}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1968487174}

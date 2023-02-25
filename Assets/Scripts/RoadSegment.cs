@@ -7,26 +7,65 @@ using UnityEngine;
 public class RoadSegment : MonoBehaviour
 {
 
+  [SerializeField] Transform[] controlPoints = new Transform[4];
   [SerializeField] ExtrudeShape shape2D;
   [SerializeField] RingExtrudeShape ring2D;
+  [SerializeField] RingExtrudeShapeClass extrudeShape2D;
 
-  [Range(2, 32)]
-  [SerializeField] int edgeCount = 8;
+  
+  [SerializeField] bool addNoise = false;
+  [SerializeField] Color baseColor = Color.green;
 
   Mesh mesh;
-
-  [SerializeField] Transform[] controlPoints = new Transform[4];
-  [Range(0, 1)]
-  [SerializeField] float tTest = 0;
+  Material[] material;
 
   Vector3 GetPos(int i) => controlPoints[i].position;
   Vector3[] pts => new Vector3[] { GetPos(0), GetPos(1), GetPos(2), GetPos(3) };
 
-  [SerializeField] bool addNoise = false;
+  [Range(.5f, 5f)]
+  [SerializeField]
+  private float radius = 3f;
 
-  [SerializeField] Color baseColor = Color.green;
+  public float Radius {
+    get {return radius;}
+    set {
+      radius = value;
+      // if (extrudeShape2D != null) {
+      extrudeShape2D.Radius = radius;
+      Extrude(mesh, extrudeShape2D, GetOrientedPoints(pts, segmentCount, tTest));
+      // }
+    }
+  }
+  [Range(0, 1)]
+  [SerializeField] float tTest = 0;
+  
+  public float T {
+    get { return tTest; }
+    set {
+      tTest = value;
+      if (extrudeShape2D != null) {
+        Extrude(mesh, extrudeShape2D, GetOrientedPoints(pts, segmentCount, tTest));
+      }
+    }
+  }
 
-  Material[] material;
+  [Range(2, 32)] 
+  [SerializeField]
+  private int segmentCount = 3;
+ 
+  public int SegmentCount {
+    get { return segmentCount; }
+    set { 
+      segmentCount = value; 
+      if (extrudeShape2D != null) {
+        Extrude(mesh, extrudeShape2D, GetOrientedPoints(pts, segmentCount, tTest));
+      }
+    }
+  }
+
+  void OnValidate() {
+    SegmentCount = segmentCount;
+  }
 
   void Awake() {
 
@@ -37,27 +76,44 @@ public class RoadSegment : MonoBehaviour
     
     material = GetComponent<MeshRenderer>().materials;
     material[0].color = baseColor;
+
+    extrudeShape2D = new RingExtrudeShapeClass(radius);
+    Extrude(this.mesh, extrudeShape2D, GetOrientedPoints(pts, segmentCount, tTest));
   }
 
   private void Update() {
-    if(addNoise) {
-      ExtrudeWithNoise(this.mesh, shape2D, GetOrientedPoints(pts, edgeCount));
-    } else {
-      Extrude(this.mesh, shape2D, GetOrientedPoints(pts, edgeCount));
-    }
+    // if(addNoise) {
+    //   ExtrudeWithNoise(this.mesh, shape2D, GetOrientedPoints(pts, edgeCount));
+    // } else {
+    //   Extrude(this.mesh, ring2D, GetOrientedPoints(pts, edgeCount));
+    // }
     // printPoint();
   }
 
-  OrientedPoint[] GetOrientedPoints(Vector3[] controlPoints, int edgeCount) {
-    OrientedPoint[] path = new OrientedPoint[edgeCount];
-    for (int i = 0; i < edgeCount; i++) {
-      float t = i / (edgeCount - 1f);
+  // Get all oriented points along curve
+  OrientedPoint[] GetOrientedPoints(Vector3[] controlPoints, int segmentCount) {
+    OrientedPoint[] path = new OrientedPoint[segmentCount];
+    for (int i = 0; i < segmentCount; i++) {
+      float t = i / (segmentCount - 1f);
       path[i] = BezierFs.GetOrientedPoint(controlPoints, t, Vector3.up);
     }
     return path;
   }
 
-  void Extrude(Mesh mesh, ExtrudeShape shape, OrientedPoint[] path) {
+  // get all oriented points up to some point t
+  OrientedPoint[] GetOrientedPoints(Vector3[] controlPoints, int segmentCount, float maxT) {
+    // OrientedPoint[] path = new OrientedPoint[segmentCount];
+    List<OrientedPoint> path = new List<OrientedPoint>();
+    for (int i = 0; i < segmentCount; i++) {
+      float t = i / (segmentCount - 1f);
+      if (t <= maxT) {
+        path.Add(BezierFs.GetOrientedPoint(controlPoints, t, Vector3.up));
+      } else break;
+    }
+    return path.ToArray();
+  }
+
+  void Extrude(Mesh mesh, RingExtrudeShapeClass shape, OrientedPoint[] path) {
     int vertsInShape = shape.VertexCount;
     int segments = path.Length - 1;
     int edgeLoops = path.Length;
@@ -71,15 +127,18 @@ public class RoadSegment : MonoBehaviour
     Vector2[] uvs = new Vector2[vertCount];
     Color[] colors = new Color[vertCount];
 
+    int multiplier = 1;
     for (int i = 0; i < path.Length; i++) {
       int offset = i * vertsInShape;
+      RingExtrudeShapeClass currentShape = new RingExtrudeShapeClass(radius);
       for (int j = 0; j < vertsInShape; j++) {
         int id = offset + j;
-        vertices[id] = path[i].LocalToWorldPos(shape.vertices[j].point);
-        normals[id] = path[i].LocalToWorldVec(shape.vertices[j].normal);
+        vertices[id] = path[i].LocalToWorldPos(currentShape.vertices[j].point);
+        normals[id] = path[i].LocalToWorldVec(currentShape.vertices[j].normal);
         colors[id] = baseColor;
         // uv
       }
+      // multiplier += 1;
     }
     int ti = 0;
     for (int i = 0; i < segments; i++) {
@@ -175,6 +234,14 @@ public class RoadSegment : MonoBehaviour
     Gizmos.DrawSphere(testPoint.pos, 0.07f);
     Handles.PositionHandle(testPoint.pos, testPoint.rot);
 
+    //GizmosDrawShape2D(extrudeShape2D, testPoint);
+
+    //Gizmos.DrawSphere(testPoint.LocalToWorld(Vector3.right * 0.3f), 0.02f);
+
+    Gizmos.color = Color.white;
+  }
+
+  void GizmosDrawShape2D(RingExtrudeShapeClass shape2D, OrientedPoint testPoint){
     void DrawPoint(Vector2 localPos) => Gizmos.DrawSphere(testPoint.LocalToWorldPos(localPos), 0.1f);
 
     Vector3[] localVerts = shape2D.vertices.Select(v => testPoint.LocalToWorldPos(v.point)).ToArray();
@@ -194,10 +261,6 @@ public class RoadSegment : MonoBehaviour
       Gizmos.DrawRay(a, localNormals[shape2D.lineIndices[i]]);
       Gizmos.DrawRay(b, localNormals[shape2D.lineIndices[i+1]]);
     }
-
-    //Gizmos.DrawSphere(testPoint.LocalToWorld(Vector3.right * 0.3f), 0.02f);
-
-    Gizmos.color = Color.white;
   }
 
 } 
