@@ -63,17 +63,15 @@ public class RoadSegment : MonoBehaviour
     }
   }
 
-  void OnValidate() {
-    SegmentCount = segmentCount;
-  }
-
   void Awake() {
 
     mesh = new Mesh();
     mesh.name = "Segment";
+    mesh.subMeshCount = 2;
 
     GetComponent<MeshFilter>().sharedMesh = mesh;
-    
+    Debug.Log("Submeshes: " + mesh.subMeshCount);
+
     material = GetComponent<MeshRenderer>().materials;
     material[0].color = baseColor;
 
@@ -130,7 +128,7 @@ public class RoadSegment : MonoBehaviour
     int multiplier = 1;
     for (int i = 0; i < path.Length; i++) {
       int offset = i * vertsInShape;
-      RingExtrudeShapeClass currentShape = new RingExtrudeShapeClass(radius);
+      RingExtrudeShapeClass currentShape = new RingExtrudeShapeClass(radius); // for varying the radius in the future
       for (int j = 0; j < vertsInShape; j++) {
         int id = offset + j;
         vertices[id] = path[i].LocalToWorldPos(currentShape.vertices[j].point);
@@ -163,6 +161,11 @@ public class RoadSegment : MonoBehaviour
     mesh.normals = normals;
     mesh.colors = colors;
     //mesh.uv = uvs;
+  }
+
+  void AddShapeEndMesh(RingExtrudeShapeClass shape) {
+    Vector3[] vertices = new Vector3[shape.VertexCount];
+
   }
 
   void ExtrudeWithNoise(Mesh mesh, ExtrudeShape shape, OrientedPoint[] path) {

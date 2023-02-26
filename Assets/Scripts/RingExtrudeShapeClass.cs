@@ -54,8 +54,8 @@ public class RingExtrudeShapeClass {
     #endregion
     
     // TODO add a mesh renderer too
-    public void GenerateMesh() {
-
+    public Mesh GenerateMesh() {
+        surfaceMesh = new Mesh();
         surfaceMesh.Clear();
         Vector3[] meshVerts = new Vector3[VertexCount];
         Vector3[] meshNormals = new Vector3[VertexCount];
@@ -74,6 +74,8 @@ public class RingExtrudeShapeClass {
         }
         surfaceMesh.SetVertices(meshVerts);
         surfaceMesh.SetTriangles(triangleIndices, 0);
+
+        return surfaceMesh;
     }
 
     private void GenerateShapeSoftEdges() {
