@@ -79,7 +79,14 @@ public class RoadSegment : MonoBehaviour
     Extrude(this.mesh, extrudeShape2D, GetOrientedPoints(pts, segmentCount, tTest));
   }
 
+  private float dt = 0.1f;
+
   private void Update() {
+    if (T >= 1) {
+      T  = 0;
+    } else {
+      T = Mathf.Clamp(T + Time.deltaTime * dt, 0, 1);
+    }
     // if(addNoise) {
     //   ExtrudeWithNoise(this.mesh, shape2D, GetOrientedPoints(pts, edgeCount));
     // } else {
@@ -266,4 +273,4 @@ public class RoadSegment : MonoBehaviour
     }
   }
 
-} 
+}   
